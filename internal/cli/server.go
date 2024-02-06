@@ -1,7 +1,3 @@
-package cli
-
-import (
-	"context"
 	"os"
 	"runtime"
 	"time"
@@ -77,8 +73,8 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 			ro.SetConnMaxIdleTime(5 * time.Minute)
 
 			// store and service
-			st := sqlite3.NewStore(ro, rw)
-			svc := service.New(service.WithSqlite3(st))
+			store := sqlite3.NewStore(ro, rw)
+			svc := service.New(service.WithStore(store))
 
 			// HTTP application server
 			app, err := app.New(cfg.App, app.WithService(svc))

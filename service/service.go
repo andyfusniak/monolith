@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/andyfusniak/monolith/internal/store"
-	"github.com/andyfusniak/monolith/internal/store/sqlite3"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -26,8 +25,8 @@ func New(opts ...Option) *Service {
 	return service
 }
 
-// WithSqlite3 configures the service with sqlite3 as its store.
-func WithSqlite3(st *sqlite3.Store) Option {
+// WithStore configures the service with a store.
+func WithStore(st store.Repository) Option {
 	return func(s *Service) {
 		s.store = st
 	}
