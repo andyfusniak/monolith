@@ -1,3 +1,7 @@
+package cli
+
+import (
+	"context"
 	"os"
 	"runtime"
 	"time"
@@ -74,7 +78,7 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 
 			// store and service
 			store := sqlite3.NewStore(ro, rw)
-			svc := service.New(service.WithStore(store))
+			svc := service.New(service.WithRepository(store))
 
 			// HTTP application server
 			app, err := app.New(cfg.App, app.WithService(svc))

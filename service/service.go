@@ -9,7 +9,7 @@ import (
 )
 
 type Service struct {
-	store store.Repository
+	repo store.Repository
 }
 
 type Option func(*Service)
@@ -25,10 +25,10 @@ func New(opts ...Option) *Service {
 	return service
 }
 
-// WithStore configures the service with a store.
-func WithStore(st store.Repository) Option {
+// WithRepository configures the service with a repository.
+func WithRepository(r store.Repository) Option {
 	return func(s *Service) {
-		s.store = st
+		s.repo = r
 	}
 }
 

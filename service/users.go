@@ -36,7 +36,7 @@ func (s *Service) CreateUser(ctx context.Context, email, password string) (User,
 	if err != nil {
 		return User{}, errors.Wrap(err, "[service] failed to generated random base58 string")
 	}
-	row, err := s.store.InsertUser(ctx, store.AddUser{
+	row, err := s.repo.InsertUser(ctx, store.AddUser{
 		UserID:       userID,
 		Email:        email,
 		PasswordHash: hash,
@@ -50,7 +50,7 @@ func (s *Service) CreateUser(ctx context.Context, email, password string) (User,
 
 // GetUser returns a single User with the given userID.
 func (s *Service) GetUser(ctx context.Context, userID string) (User, error) {
-	row, err := s.store.GetUser(ctx, userID)
+	row, err := s.repo.GetUser(ctx, userID)
 	if err != nil {
 		if errors.Is(err, store.ErrUserNotFound) {
 			return User{}, ErrUserNotFound
@@ -73,7 +73,7 @@ func (s *Service) GetUser(ctx context.Context, userID string) (User, error) {
 // VerifyUserPassword can be used to find valid emails. Instead return an
 // authorized response to clients.
 func (s *Service) VerifyUserPassword(ctx context.Context, email, password string) (User, error) {
-	row, err := s.store.GetUserByEmail(ctx, email)
+	row, err := s.repo.GetUserByEmail(ctx, email)
 	if err != nil {
 		if errors.Is(err, store.ErrUserNotFound) {
 			_, _ = argon2id.ComparePasswordAndHash(password, "dummyhash")
