@@ -17,4 +17,4 @@ dockerbuild:
 
 .PHONY: clean
 clean:
-	-@rm -r $(OUTPUT_DIR)/* 2> /dev/null || true
+	-@rm -r $(OUTPUT_DIR)/monolith 2> /dev/null || true
