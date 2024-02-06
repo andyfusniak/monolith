@@ -27,7 +27,6 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 		Aliases: []string{"serve"},
 		Short:   "start the web service",
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			// environment
 			cfg, err := env.EnvToConfig()
 			if err != nil {
@@ -48,6 +47,7 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 				}
 			}
 
+			// set up logging
 			defer func() {
 				log.Infof("[main] goodbye from monolith version %s (%s)", version, gitcommit)
 			}()
@@ -57,7 +57,7 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 
 			// database connection
 			// one read-only with high concurrency
-			// and one read-write for non-concurrent queries
+			// one read-write for non-concurrent queries
 			rw, err := sqlite3.OpenDB(cfg.DBFilepath)
 			if err != nil {
 				return err
@@ -76,16 +76,15 @@ func NewCmdServer(version, gitcommit string) *cobra.Command {
 			ro.SetMaxIdleConns(defaultMaxIdleConns)
 			ro.SetConnMaxIdleTime(5 * time.Minute)
 
+			// store and service
 			st := sqlite3.NewStore(ro, rw)
-
 			svc := service.New(service.WithSqlite3(st))
 
-			// web application server
+			// HTTP application server
 			app, err := app.New(cfg.App, app.WithService(svc))
 			if err != nil {
 				return err
 			}
-
 			if err := app.Start(context.Background()); err != nil {
 				return err
 			}
