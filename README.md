@@ -1,4 +1,4 @@
-# monolith (Universal monolith web app writtin in Go)
+# monolith (Universal monolith web app written in Go)
 
 This repository provides a skeleton web application written in Go.
 
