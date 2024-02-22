@@ -27,8 +27,6 @@ func run() error {
 	cliApp := cli.NewApp(
 		cli.WithVersion(version),
 		cli.WithGitCommit(gitCommit),
-		cli.WithStdOut(os.Stdout),
-		cli.WithStdErr(os.Stderr),
 	)
 
 	root := cobra.Command{
@@ -52,5 +50,4 @@ func run() error {
 	}
 
 	return nil
-
 }

@@ -27,11 +27,14 @@ type Option func(*App)
 
 // NewApp creates a new CLI application.
 func NewApp(options ...Option) *App {
-	a := &App{}
+	a := &App{
+		stdout: os.Stdout,
+		stderr: os.Stderr,
+	}
+
 	for _, o := range options {
 		o(a)
 	}
-
 	return a
 }
 
