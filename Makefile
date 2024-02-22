@@ -2,7 +2,7 @@ OUTPUT_DIR=$(shell go env GOPATH)/bin
 GITHUB_ACCOUNT=andyfusniak
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 PROJECT_NAME=monolith
-VERSION=v0.1.0
+VERSION=v0.2.0
 
 all: monolith
 
