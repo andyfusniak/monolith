@@ -9,7 +9,6 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/andyfusniak/monolith/service"
-	"github.com/go-chi/chi/v5"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -82,7 +81,7 @@ func (h *Handler) GetUser() http.HandlerFunc {
 		ctx := r.Context()
 		cl := log.WithContext(ctx)
 
-		userID := chi.URLParam(r, "user_id")
+		userID := r.PathValue("user_id")
 		if !isValidUserID(userID) {
 			cl.Warnf("[auth] path parameter /users/%s invalid", userID)
 			clientError(w, http.StatusUnprocessableEntity, errCodeUserIDInvalid,

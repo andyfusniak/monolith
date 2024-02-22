@@ -13,17 +13,16 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/andyfusniak/monolith/service"
-	"github.com/go-chi/chi/v5"
 )
 
 type App struct {
-	svc *service.Service
-	// log    *slog.Logger
+	svc     *service.Service
 	cfg     env.AppConfig
-	router  chi.Router
+	router  *http.ServeMux
 	handler *handler.Handler
 }
 
+// Option is a function that configures an App.
 type Option func(a *App)
 
 // New creates a new app server.
@@ -39,17 +38,19 @@ func New(cfg env.AppConfig, opts ...Option) (*App, error) {
 	app.handler = handler.New(app.svc)
 
 	// routing
-	app.router = app.v1routes()
+	app.router = app.v1Routes()
 
 	return app, nil
 }
 
+// WithService sets the service for the app.
 func WithService(svc *service.Service) Option {
 	return func(a *App) {
 		a.svc = svc
 	}
 }
 
+// Start the app server.
 func (a *App) Start(ctx context.Context) error {
 	// HTTP Service
 	srv := http.Server{

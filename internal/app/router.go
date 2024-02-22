@@ -1,38 +1,19 @@
 package app
 
 import (
-	"github.com/go-chi/chi/v5"
+	"net/http"
 )
 
-func (a *App) v1routes() *chi.Mux {
-	r := chi.NewRouter()
-	r.Route("/v1", func(r chi.Router) {
-		r.Mount("/", a.routes())
-	})
-
-	return r
-}
-
-func (a *App) routes() *chi.Mux {
-	mux := chi.NewRouter()
-	mux.Use(a.handler.JSONHeader)
+func (a *App) v1Routes() *http.ServeMux {
+	mux := &http.ServeMux{}
+	// mux.Use(a.handler.JSONHeader)
 
 	// auth
-	mux.Group(func(r chi.Router) {
-		r.Route("/auth", func(r chi.Router) {
-			r.Post("/signin", a.handler.SignIn())
-		})
-	})
+	mux.HandleFunc("POST /v1/auth/signin", a.handler.SignIn())
 
 	// user
-	mux.Group(func(r chi.Router) {
-		r.Route("/users", func(r chi.Router) {
-			r.Post("/", a.handler.CreateUser())
-		})
-		r.Route("/users/{user_id}", func(r chi.Router) {
-			r.Get("/", a.handler.GetUser())
-		})
-	})
+	mux.HandleFunc("POST /v1/users", a.handler.CreateUser())
+	mux.HandleFunc("GET /v1/users/{user_id}", a.handler.GetUser())
 
 	return mux
 }

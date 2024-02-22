@@ -1,11 +1,10 @@
 module github.com/andyfusniak/monolith
 
-go 1.21.6
+go 1.22
 
 require (
 	github.com/alexedwards/argon2id v1.0.0
 	github.com/andyfusniak/base58 v0.0.0-20240206132731-18f55196a605
-	github.com/go-chi/chi/v5 v5.0.11
 	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/pkg/errors v0.9.1
