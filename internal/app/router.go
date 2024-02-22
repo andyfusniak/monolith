@@ -5,7 +5,7 @@ import (
 )
 
 func (a *App) v1Routes() *http.ServeMux {
-	mux := &http.ServeMux{}
+	mux := http.NewServeMux()
 	// mux.Use(a.handler.JSONHeader)
 
 	// auth
